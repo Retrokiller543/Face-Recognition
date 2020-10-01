@@ -1,4 +1,5 @@
 const video = document.getElementById("video");
+const acceptedPeople = ["Emil Schütt"];
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
@@ -23,7 +24,7 @@ video.addEventListener("play", async () => {
   faceapi.matchDimensions(canvas, displaySize);
   const labeledFaceDescriptors = await loadLabeledImages();
   const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
-    console.log('loaded');
+  console.log("loaded");
   setInterval(async () => {
     // const detections = await faceapi
     //   .detectAllFaces(video)
@@ -46,24 +47,30 @@ video.addEventListener("play", async () => {
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
       drawBox.draw(canvas);
       faceapi.draw.drawDetections(canvas, resizedDetections);
-    //   faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-    //   faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+      if (acceptedPeople.includes(result._label)) {
+        console.log(result._label + " detected!");
+      }
+      //   faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+      //   faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
     });
+    // if ((results = "")) {
+    //   canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    // }
   }, 50);
 });
 
 function loadLabeledImages() {
   const labels = [
     "Emil Schütt",
-    'Marcus Nykvist',
-    'Alexander Franke',
-    'Sofia',
-    'Stella'
+    // "Marcus Nykvist",
+    // 'Alexander Franke',
+    // 'Sofia',
+    // 'Stella'
   ];
   return Promise.all(
     labels.map(async (label) => {
       const descriptions = [];
-      for (let i = 1; i <= 2; i++) {
+      for (let i = 1; i <= 4; i++) {
         const img = await faceapi.fetchImage(
           `https://raw.githubusercontent.com/Retrokiller543/Face-Recognition/master/Face%20rec%202/labeled_images/${label}/${i}.jpg`,
           { mode: "no-cors" }
