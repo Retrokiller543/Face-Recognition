@@ -36,12 +36,15 @@ async function start() {
 }
 
 function loadLabeledImages() {
-    const labels = ['Black Widow', 'Captain America', 'Captain Marvel', 'Hawkeye', 'Jim Rhodes', 'Thor', 'Tony Stark']
+    const labels = ['Black Widow', 'Captain America', 'Captain Marvel', 'Hawkeye', 'Jim Rhodes', 'Thor', 'Tony Stark', 'Emil Schütt']
     return Promise.all(
         labels.map(async label => {
             const descriptions = []
             for (let i = 1; i <= 2; i++) {
-                const img = await faceapi.fetchImage(`https://github.com/Retrokiller543/Face-Recognition/tree/master/Face%20rec%202/labeled_images/${label}/${i}.jpg`)
+                const img = await faceapi.fetchImage(
+                  `https://raw.githubusercontent.com/Retrokiller543/Face-Recognition/master/Face%20rec%202/labeled_images/${label}/${i}.jpg`,
+                  { mode: "no-cors" }
+                );
                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                 descriptions.push(detections.descriptor)
             }
