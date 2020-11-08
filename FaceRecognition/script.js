@@ -56,7 +56,7 @@ video.addEventListener("play", async () => {
     // if ((results = "")) {
     //   canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
     // }
-  }, 50);
+  }, 100);
 });
 
 function loadLabeledImages() {
